@@ -5,7 +5,12 @@ import subprocess
 import sys
 
 SKIP_DIRS = set(["venv", ".git", "__pycache__"])
-
+if len(sys.argv) == 1:
+    chktexrc_file = sys.argv[1]
+    additional_args = None
+elif len(sys.argv) == 2:
+    chktexrc_file = sys.argv[1]
+    additional_args = sys.argv[2]
 
 GITHUB_WORKSPACE = os.environ.get("GITHUB_WORKSPACE")
 if not GITHUB_WORKSPACE:
@@ -14,13 +19,16 @@ if not GITHUB_WORKSPACE:
 
 os.chdir(GITHUB_WORKSPACE)
 
-
-CHKTEXRC = os.path.abspath(".chktexrc")
-if os.path.exists(CHKTEXRC):
+if os.path.exists(chktexrc_file):
     print("found local chktexrc")
-    CHKTEX_COMMAND = lambda file: ["chktex", "-q", "-l", CHKTEXRC, file]
+    CHKTEX_COMMAND = ["chktex", "-q", "-l", chktexrc_file]
 else:
-    CHKTEX_COMMAND = lambda file: ["chktex", "-q", file]
+    CHKTEX_COMMAND = ["chktex", "-q"]
+
+if additional_args is not None:
+    CHKTEX_COMMAND.extend(additional_args)
+
+CHKTEX_COMMAND = lambda file: CHKTEX_COMMAND.append(file)
 
 
 def main():

@@ -20,4 +20,7 @@ RUN pip3 install -r requirements.txt
 
 COPY . .
 
-CMD [ "python3", "/tmp/action/run_action.py" ]
+chktexrc="$1"
+args="$2"
+
+CMD [ "python3", "/tmp/action/run_action.py", $chktexrc, $args]

@@ -1,9 +1,17 @@
 name: LaTeX linter (chktex)
 author: Jeremy Kun
 description: Lint your LaTeX files with chktex
+inputs:
+  config:
+    description: The configuration file for chktex
+  args:
+    description: Additional arguments to be passed to chktex
 runs:
   using: 'docker'
   image: 'Dockerfile'
+  args:
+    - ${{ inputs.config }}
+    - ${{ inputs.args }}
 branding:
   icon: 'edit'
   color: 'yellow'
