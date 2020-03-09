@@ -5,7 +5,10 @@ import subprocess
 import sys
 
 SKIP_DIRS = set(["venv", ".git", "__pycache__"])
-if len(sys.argv) == 1:
+if len(sys.argv) == 0:
+    chktexrc_file = 'NONE'
+    additional_args = None
+elif len(sys.argv) == 1:
     chktexrc_file = sys.argv[1]
     additional_args = None
 elif len(sys.argv) == 2:
