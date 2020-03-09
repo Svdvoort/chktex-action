@@ -17,11 +17,11 @@ if not GITHUB_WORKSPACE:
 
 os.chdir(GITHUB_WORKSPACE)
 
+CHKTEX_COMMAND = CHKTEX_COMMAND = ["chktex", "-q", "-b=0"]
 if os.path.exists(chktexrc_file):
+    chktexrc_file = os.path.abspath(chktexrc_file)
     print("found local chktexrc")
-    CHKTEX_COMMAND = ["chktex", "-q", "-l", chktexrc_file]
-else:
-    CHKTEX_COMMAND = ["chktex", "-q"]
+    CHKTEX_COMMAND.extend(["-l", chktexrc_file])
 
 if additional_args is not "NONE":
     additional_args = additional_args.split(' ')
