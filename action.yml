@@ -4,8 +4,13 @@ description: Lint your LaTeX files with chktex
 inputs:
   config:
     description: The configuration file for chktex
+    default: .chktexrc
   args:
     description: Additional arguments to be passed to chktex
+    default: "NONE"
+  warnings_as_errors:
+    description: If warnings are produced by chktex, should this fail the pipeline?
+    default: 0
 runs:
   using: 'docker'
   image: 'Dockerfile'

@@ -5,15 +5,10 @@ import subprocess
 import sys
 
 SKIP_DIRS = set(["venv", ".git", "__pycache__"])
-if len(sys.argv) == 1:
-    chktexrc_file = 'NONE'
-    additional_args = None
-elif len(sys.argv) == 2:
-    chktexrc_file = sys.argv[1]
-    additional_args = None
-elif len(sys.argv) == 3:
-    chktexrc_file = sys.argv[1]
-    additional_args = sys.argv[2]
+chktexrc_file = sys.argv[1]
+additional_args = sys.argv[2]
+warnings_as_errors = sys.argv[3]
+
 
 GITHUB_WORKSPACE = os.environ.get("GITHUB_WORKSPACE")
 if not GITHUB_WORKSPACE:
@@ -28,7 +23,7 @@ if os.path.exists(chktexrc_file):
 else:
     CHKTEX_COMMAND = ["chktex", "-q"]
 
-if additional_args is not None:
+if additional_args is not "NONE":
     additional_args = additional_args.split(' ')
     CHKTEX_COMMAND.extend(additional_args)
 
@@ -89,7 +84,10 @@ def main():
             print("chktex run into errors:", stderr, sep="\n")
 
     print(f"found {files_with_errors} files with errors")
-    sys.exit(files_with_errors)
+    if warnings_as_errors == "1":
+        sys.exit(files_with_errors)
+    else:
+        sys.exit(0)
 
 
 if __name__ == "__main__":
