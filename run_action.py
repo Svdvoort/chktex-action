@@ -5,13 +5,13 @@ import subprocess
 import sys
 
 SKIP_DIRS = set(["venv", ".git", "__pycache__"])
-if len(sys.argv) == 0:
+if len(sys.argv) == 1:
     chktexrc_file = 'NONE'
     additional_args = None
-elif len(sys.argv) == 1:
+elif len(sys.argv) == 2:
     chktexrc_file = sys.argv[1]
     additional_args = None
-elif len(sys.argv) == 2:
+elif len(sys.argv) == 3:
     chktexrc_file = sys.argv[1]
     additional_args = sys.argv[2]
 
@@ -29,9 +29,10 @@ else:
     CHKTEX_COMMAND = ["chktex", "-q"]
 
 if additional_args is not None:
+    additional_args = additional_args.split(' ')
     CHKTEX_COMMAND.extend(additional_args)
 
-CHKTEX_COMMAND = lambda file: CHKTEX_COMMAND.append(file)
+CHKTEX_COMMAND.append('filename')
 
 
 def main():
@@ -62,10 +63,11 @@ def main():
 
         directory = os.path.dirname(file)
         relative_file = os.path.basename(file)
+        CHKTEX_COMMAND[-1] = relative_file
 
         # run process inside the file's folder
         completed_process = subprocess.run(
-            CHKTEX_COMMAND(relative_file),
+            CHKTEX_COMMAND,
             cwd=directory,
             capture_output=True,
             text=True,
