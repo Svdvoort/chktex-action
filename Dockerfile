@@ -14,11 +14,11 @@ RUN apt-get update && apt-get install -y \
   python3.7 \
   python3-pip
 
-WORKDIR /tmp/action
+WORKDIR /root
 COPY requirements.txt ./
 RUN pip3 install -r requirements.txt
 
-COPY . .
+COPY run_chktex.sh /root/
 
-ENTRYPOINT ['/tmp/action/run_chktex.sh']
+ENTRYPOINT ["/root/run_chktex.sh"]
 # CMD [ "python3", "/tmp/action/run_action.py", $chktexrc, $args]
