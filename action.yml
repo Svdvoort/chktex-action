@@ -10,7 +10,7 @@ inputs:
     default: "NONE"
   warnings_as_errors:
     description: If warnings are produced by chktex, should this fail the pipeline?
-    default: 0
+    default: "0"
 runs:
   using: 'docker'
   image: 'Dockerfile'
