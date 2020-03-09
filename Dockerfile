@@ -19,6 +19,7 @@ COPY requirements.txt ./
 RUN pip3 install -r requirements.txt
 
 COPY run_chktex.sh /root/
+COPY run_action.py /root/
 
 ENTRYPOINT ["/root/run_chktex.sh"]
 # CMD [ "python3", "/tmp/action/run_action.py", $chktexrc, $args]
