@@ -1,10 +1,32 @@
-#!/bin/sh
-
-set -e
+#!/bin/bash
 
 config="$1"
 args="$2"
-warnings_as_errors="$3"
+root_directory="$3"
+recursive="$4"
+chktex_output="$5"
 
-python3 /root/run_action.py $config $args $warnings_as_errors
-#python3 /tmp/action/run_action.py $config $args
+chktex_command=(chktex -q)
+
+if [ -n "$config" ]; then
+    chktex_command+=(-l $config)
+fi
+
+if [ -n "$args" ]; then
+    chktex_command+=($args)
+fi
+
+if [ -n "$root_directory" ]; then
+    cd ${root_directory}
+fi
+
+if [ "$recursive" = "True" ]; then
+    to_check_files=$(find . -name '*.tex')
+else
+    to_check_files=$(find . -maxdepth 1 -name '*.tex')
+fi
+
+for file in ${to_check_files}
+do
+    "${chktex_command[@]}" "$file" >> "$chktex_output"
+done

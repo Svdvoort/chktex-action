@@ -2,21 +2,28 @@ name: LaTeX linter (chktex)
 author: Jeremy Kun
 description: Lint your LaTeX files with chktex
 inputs:
-  config:
-    description: The configuration file for chktex
-    default: .chktexrc
-  args:
-    description: Additional arguments to be passed to chktex
-    default: "NONE"
-  warnings_as_errors:
-    description: If warnings are produced by chktex, should this fail the pipeline?
-    default: "0"
+    config:
+        description: The configuration file for chktex
+    args:
+        description: Additional arguments to be passed to chktex
+    root_directory:
+        description: Root directory to from which to check the files. By default the root directory will be used
+    recursive:
+        description: Whether to recursively check all files in subdirectories
+        default: "True"
+    log_file:
+        description: The log file in which to put the output of chktex
+        default: "chktex_output.log"
+
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  args:
-    - ${{ inputs.config }}
-    - ${{ inputs.args }}
+    using: docker
+    image: Dockerfile
+    args:
+        - ${{ inputs.config }}
+        - ${{ inputs.args }}
+        - ${{ inputs.root_directory }}
+        - ${{ inputs.recursive }}
+        - ${{ inputs.log_file }}
 branding:
-  icon: 'edit'
-  color: 'yellow'
+    icon: edit
+    color: yellow
