@@ -31,6 +31,6 @@ do
     "${chktex_command[@]}" "$file" >> "$chktex_output"
     output_status=$?
     if [ $output_status -ne 0 ]; then
-        echo "::warning file=${file}::Unresolved linter warnings"
+        echo "::warning file=${file}::Unresolved linter warnings in ${file}"
     fi
 done
