@@ -29,4 +29,8 @@ fi
 for file in ${to_check_files}
 do
     "${chktex_command[@]}" "$file" >> "$chktex_output"
+    output_status=$?
+    if [ $output_status -ne 0 ]; then
+        echo "::warning file=${file}::Unresolved linter warnings"
+    fi
 done
